@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_number_trivia_standalone/core/error/exceptions.dart';
-import 'package:flutter_number_trivia_standalone/features/number_trivia/data/datasources/number_trivia_local_datasource.dart';
+import 'package:flutter_number_trivia_standalone/features/number_trivia/data/datasources/number_trivia_local_data_source.dart';
 import 'package:flutter_number_trivia_standalone/features/number_trivia/data/models/number_trivia_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -26,7 +26,7 @@ class NumberTriviaLocalDataSourceImplementation
 
   @override
   Future<NumberTriviaModel> getLastNumberTrivia() async {
-    final jsonString = sharedPreferences.getString('CACHED_NUMBER_TRIVIA');
+    final jsonString = sharedPreferences.getString(CACHED_NUMBER_TRIVIA);
     if (jsonString != null) {
       return Future.value(NumberTriviaModel.fromJson(json.decode(jsonString)));
     } else {
