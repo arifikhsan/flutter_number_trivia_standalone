@@ -16,6 +16,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mockito: ^4.1.1
+  json_serializable: ^3.2.5
 
 flutter:
   uses-material-design: true
