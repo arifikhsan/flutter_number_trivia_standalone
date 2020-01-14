@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-class NumberTriviaEntity {
+class NumberTriviaEntity extends Equatable {
   final String text;
   final int number;
 
@@ -8,4 +9,7 @@ class NumberTriviaEntity {
     @required this.text,
     @required this.number,
   });
+
+  @override
+  List<Object> get props => [text, number];
 }
