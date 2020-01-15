@@ -1,5 +1,6 @@
 import 'package:data_connection_checker/data_connection_checker.dart';
-import 'package:flutter_number_trivia_standalone/core/network/network_info.dart';
+
+import 'network_info.dart';
 
 class NetworkInfoImpl implements NetworkInfo {
   final DataConnectionChecker connectionChecker;
