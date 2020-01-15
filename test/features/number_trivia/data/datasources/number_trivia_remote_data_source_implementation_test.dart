@@ -103,7 +103,6 @@ void main() {
   });
 
   group('getRandomNumberTrivia', () {
-    final testNumber = 1;
     final testNumberTriviaModel =
         NumberTriviaModel.fromJson(json.decode(fixture('trivia.json')));
 
