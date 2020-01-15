@@ -8,6 +8,8 @@ import 'package:flutter_number_trivia_standalone/features/number_trivia/data/dat
 import 'package:flutter_number_trivia_standalone/features/number_trivia/domain/entities/number_trivia_entity.dart';
 import 'package:flutter_number_trivia_standalone/features/number_trivia/domain/repositories/number_trivia_repository.dart';
 
+typedef Future<NumberTriviaEntity> _ConcreteOrRandomChooser();
+
 class NumberTriviaRepositoryImpl implements NumberTriviaRepository {
   final NumberTriviaRemoteDataSource remoteDataSource;
   final NumberTriviaLocalDataSource localDataSource;
@@ -22,30 +24,24 @@ class NumberTriviaRepositoryImpl implements NumberTriviaRepository {
   @override
   Future<Either<Failure, NumberTriviaEntity>> getConcreteNumberTrivia(
       int number) async {
-    if (await networkInfo.isConnected) {
-      try {
-        final remoteTrivia =
-            await remoteDataSource.getConcreteNumberTrivia(number);
-        localDataSource.cacheNumberTrivia(remoteTrivia);
-        return Right(remoteTrivia);
-      } on ServerException {
-        return Left(ServerFailure());
-      }
-    } else {
-      try {
-        final localTrivia = await localDataSource.getLastNumberTrivia();
-        return Right(localTrivia);
-      } on CacheException {
-        return Left(CacheFailure());
-      }
-    }
+    return await _getTrivia(() {
+      return remoteDataSource.getConcreteNumberTrivia(number);
+    });
   }
 
   @override
   Future<Either<Failure, NumberTriviaEntity>> getRandomNumberTrivia() async {
+    return await _getTrivia(() {
+      return remoteDataSource.getRandomNumberTrivia();
+    });
+  }
+
+  Future<Either<Failure, NumberTriviaEntity>> _getTrivia(
+    _ConcreteOrRandomChooser getConcreteOrRandom,
+  ) async {
     if (await networkInfo.isConnected) {
       try {
-        final remoteTrivia = await remoteDataSource.getRandomNumberTrivia();
+        final remoteTrivia = await getConcreteOrRandom();
         localDataSource.cacheNumberTrivia(remoteTrivia);
         return Right(remoteTrivia);
       } on ServerException {
